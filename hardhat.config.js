@@ -3,9 +3,9 @@ require("@nomiclabs/hardhat-web3");
 require('hardhat-deploy');
 require("@nomiclabs/hardhat-ethers");
 require("hardhat-deploy-ethers");
-require("./scripts/swapTask.js");
-require("./scripts/swapTaskHardcoded.js");
-require("./scripts/upgradeGamer1.js");
+require("./Demo/Scripts/swapTask.js");
+require("./Demo/Scripts/swapTaskHardcoded.js");
+require("./Demo/Scripts/upgradeGamer1.js");
 
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
