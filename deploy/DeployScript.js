@@ -44,7 +44,8 @@ async function main() {
     await addPolicy(rareToken.address, "transferToken", rarePolicy.address, "rareToken");
 
     console.log("Initiate Uniswap pool.");
-    const poolSetup = await deployPoolSetup(commonToken ,rareToken);
+    const uniswapV3Factory = await deployUniswapV3Factory();
+    const poolSetup = await deployPoolSetup(commonToken ,rareToken, uniswapV3Factory);
     const poolAddr = await getPoolAddress();
     await addUser(poolSetup.address, "poolSetup");
     await addUser(poolAddr, "pool");
@@ -91,6 +92,26 @@ async function deployByteConversion() {
     appendDeploymentResult("ByteConversion", byteConversion.receipt.gasUsed);
     return byteConversion;
 }
+
+async function deployUniswapV3Factory() {
+    const {deploy} = deployments;
+    const {deployer} = await getNamedAccounts();
+    // import factoryAbi from '@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json';
+    const factoryJson = await readJSONFile('./node_modules/@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json');
+    const factoryAbi = factoryJson.abi;
+    const factoryBytecode = factoryJson.bytecode;
+    const uniswapV3FactoryContract = new web3.eth.Contract(factoryAbi);
+    uniswapV3FactoryContract.setProvider('ws://localhost:8545');
+    var factoryAddress = null;
+    const uniswapV3Factory = await uniswapV3FactoryContract.deploy({
+        data: factoryBytecode
+    }).send({
+        from: deployer
+    }).then(function(newContractInstance){
+        factoryAddress = newContractInstance.options.address
+    });
+    return factoryAddress;
+};
 
 async function deployGovernanceManagerWithOneAdmin() {
     const {deploy} = deployments;
@@ -222,6 +243,8 @@ async function submitConfirmExecuteTx(to, data, description) {
 }
 
 async function addUser(userAddr, description) {
+    // console.log("add user");
+    // console.log(web3);
     const data = web3.eth.abi.encodeFunctionCall(
         {
             name: 'addUser',
@@ -273,12 +296,14 @@ async function addPolicy(resourceAddr, operation, policyAddr, description) {
 }
 
 
-async function deployPoolSetup(commonToken, rareToken) {
+async function deployPoolSetup(commonToken, rareToken, uniswapV3Factory) {
+    // console.log("deployPoolSetup");
+    // console.log(uniswapV3Factory);
     const {deploy} = deployments;
     const {deployer} = await getNamedAccounts();
     const poolSetup = await deploy("PoolSetup", {
         from: deployer,
-        args: [commonToken.address, rareToken.address],
+        args: [commonToken.address, rareToken.address, uniswapV3Factory],
     });
 
     // console.log("Newly Deployed poolSetup: " + poolSetup.newlyDeployed);
@@ -407,11 +432,16 @@ async function writeResultsToJson(policyName) {
         policy: policyName,
         results: results,
     };
-    await fs.appendFile("./Results/costRawSetup.json", JSON.stringify(obj)+",", function(err) {
+    await fs.appendFile("./Results/deployScript.json", JSON.stringify(obj)+",", function(err) {
         if (err) throw err;
         console.log('complete');
         }
     );
 }
 
-module.exports.tags = ['RawSetup'];
+async function readJSONFile(file) {
+    const abi = await fs.readFile(file);
+    return JSON.parse(abi);
+}
+
+module.exports.tags = ['DeployScript'];
