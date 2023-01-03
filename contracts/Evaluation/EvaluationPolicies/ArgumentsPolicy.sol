@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "../Abac/Interfaces/IPolicy.sol";
-import "../Libraries/ByteConversion.sol";
+import "../../Abac/Interfaces/IPolicy.sol";
+import "../../Libraries/ByteConversion.sol";
 
 contract ArgumentsPolicy is IPolicy {
 

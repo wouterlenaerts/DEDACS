@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "../Abac/Interfaces/IPolicy.sol";
-import "../Abac/Interfaces/IGovernanceManager.sol";
-import "../Abac/Interfaces/IUserManager.sol";
-import "../Abac/Interfaces/IEnvironmentManager.sol";
-import "../Abac/Interfaces/IResource.sol";
-import "../Libraries/ByteConversion.sol";
+import "../../Abac/Interfaces/IPolicy.sol";
+import "../../Abac/Interfaces/IGovernanceManager.sol";
+import "../../Abac/Interfaces/IUserManager.sol";
+import "../../Abac/Interfaces/IEnvironmentManager.sol";
+import "../../Abac/Interfaces/IResource.sol";
+import "../../Libraries/ByteConversion.sol";
 
 contract AttributesAndArgumentsPolicy is IPolicy {
     IGovernanceManager governanceMgr;
