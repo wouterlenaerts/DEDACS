@@ -14,13 +14,21 @@ npm install hardhat-deploy
 npm install hardhat-deploy-ethers
 ```
 
-Now you can run the command 
+Now you can run the following command to startup a hardhat network
 ```bash
 npx hardhat node --no-deploy
 ```
 
+To be able to compile all necessary core solidity contracts you need to install the following libraries:
+```bash
 npm install @openzeppelin/contracts
+npm install web3
+```
 
+Now you can run the following script to deploy the core contracts of DEDACS (without the demo contracts)
+```bash
+npx hardhat --network localhost deploy --reset --tags DeployCore
+```
 
 
 ### Installation for demo
@@ -67,3 +75,6 @@ npx hardhat node --no-deploy
 
 npx hardhat --network localhost deploy --reset --tags DeployScript
 npx hardhat --network localhost deploy --reset --tags DeployCore
+
+To run the DEMO, you need to use the other config file which will compile more solidity contracts.
+npx hardhat --config hardhat.config_demo.js --network localhost deploy --reset --tags DeployScript
