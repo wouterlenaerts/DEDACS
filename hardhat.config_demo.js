@@ -3,6 +3,9 @@ require("@nomiclabs/hardhat-web3");
 require('hardhat-deploy');
 require("@nomiclabs/hardhat-ethers");
 require("hardhat-deploy-ethers");
+require("./Demo/Scripts/swapTask.js");
+require("./Demo/Scripts/swapTaskHardcoded.js");
+require("./Demo/Scripts/upgradeGamer1.js");
 
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
@@ -47,8 +50,7 @@ module.exports = {
     ]
   },
   paths: {
-    sources: "./contracts/Abac",
-    sources: "./contracts/Libraries"
+    sources: "./contracts",
   },
   namedAccounts: {
     deployer: {
