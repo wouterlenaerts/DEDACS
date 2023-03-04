@@ -46,10 +46,17 @@ module.exports = {
       }
     ]
   },
-  paths: {
-    sources: "./contracts/Abac",
-    sources: "./contracts/Libraries"
-  },
+  // paths: {
+  //   sources: "./contracts/Abac",
+  //   sources: "./contracts/Libraries"
+  // },
+  paths: [{
+      sources: "./contracts/Abac"
+    },
+    {
+      sources: "./contracts/Libraries"
+    }
+  ],
   namedAccounts: {
     deployer: {
         default: 0, // here this will by default take the first account as deployer
