@@ -45,26 +45,12 @@ async function main() {
 
     console.log("Initiate Uniswap pool.");
     const uniswapV3Factory = await deployUniswapV3Factory();
-    console.log("a");
-
     const poolSetup = await deployPoolSetup(commonToken ,rareToken, uniswapV3Factory);
-    console.log("b");
-
     const poolAddr = await getPoolAddress();
-    console.log("c");
-
     await addUser(poolSetup.address, "poolSetup");
-    console.log("d");
-
     await addUser(poolAddr, "pool");
-    console.log("e");
-
     await grantRole(poolSetup.address, "gameContract", "poolSetup");
-    console.log("f");
-
     await grantRole(poolAddr, "gameContract", "pool");
-    console.log("g");
-    
 
     await mintGameToken(commonToken, 8000000000000, byteConversion);
     await mintGameToken(rareToken, 8000000000000, byteConversion);
@@ -84,7 +70,6 @@ async function main() {
     const rareBalance = await getBalanceOf(commonToken, deployer, byteConversion);
     await transferGameToken(commonToken, gamer1.address, commonBalance, byteConversion);
     await transferGameToken(rareToken, gamer2.address, rareBalance, byteConversion);
-    console.log("h");
 
     //Get signer object from address of user1
     const jsonRpcProvider =  new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545/');
@@ -111,26 +96,16 @@ async function deployByteConversion() {
 async function deployUniswapV3Factory() {
     const {deploy} = deployments;
     const {deployer} = await getNamedAccounts();
-    console.log("1");
 
     // import factoryAbi from '@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json';
     const factoryJson = await readJSONFile('./node_modules/@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json');
-    console.log("2");
-
     const factoryAbi = factoryJson.abi;
-    console.log("3");
-
     const factoryBytecode = factoryJson.bytecode;
-    console.log("4");
-
     const uniswapV3FactoryContract = new web3.eth.Contract(factoryAbi);
-    console.log("5");
 
     //await uniswapV3FactoryContract.setProvider('ws://localhost:8545');
     await uniswapV3FactoryContract.setProvider('http://127.0.0.1:8545/');
-    console.log("6a");
     var factoryAddress = null;
-    console.log("7");
     const uniswapV3Factory = await uniswapV3FactoryContract.deploy({
         data: factoryBytecode
     }).send({
@@ -138,7 +113,6 @@ async function deployUniswapV3Factory() {
     }).then(function(newContractInstance){
         factoryAddress = newContractInstance.options.address
     });
-    console.log("8");
 
     return factoryAddress;
 };
