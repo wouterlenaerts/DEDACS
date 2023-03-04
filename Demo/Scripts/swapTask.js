@@ -17,7 +17,7 @@ task("swap", "Swap tokens from a Gamer account to the pool from the GameSetup")
     const GamerContract = await ethers.getContract('Gamer1');
     
     //Get signer object from address of user1
-    const jsonRpcProvider =  new ethers.providers.JsonRpcProvider();
+    const jsonRpcProvider =  new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545/');
     const signer = jsonRpcProvider.getSigner(user1);
     // console.log("signer = "+signer.address);
 

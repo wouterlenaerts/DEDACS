@@ -17,7 +17,7 @@ task("swapHardcoded", "Swap tokens from a Gamer account to the pool from the Gam
     const GamerContract = await ethers.getContract('Gamer1');
 
     //Get signer object from address of user1
-    const jsonRpcProvider =  new ethers.providers.JsonRpcProvider();
+    const jsonRpcProvider =  new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545/');
     const signer = jsonRpcProvider.getSigner(user1);
 
     //Make the transaction from the signer account
@@ -25,7 +25,7 @@ task("swapHardcoded", "Swap tokens from a Gamer account to the pool from the Gam
     const tx = await swapTx.wait();
     console.log("swap rare cost =  " + tx.gasUsed);
     await appendTransactionResult(tokenType, commonForRare, amount, tx.gasUsed);
-    await writeResultsToJson();
+    // await writeResultsToJson();
 
     const [gamerCommon, gamerRare] = await GamerContract.connect(signer).getGamerFunds();
     console.log("gamer funds: " + gamerCommon + "; " + gamerRare);
