@@ -103,10 +103,49 @@ or this one if you need to work with an elaborated config file:
 npx hardhat --config hardhat.config_demo.js --network localhost deploy --reset --tags DeployDemo
 ```
 
+
+
+# Demo
+
 The idea of this demo is that there are 2 resources (_Common token_ and _Rare token_) that are protected by DEDACS. There are 2 gamers in this demo that can exchange the resources through a Uniswap pool. Depending on the level they have, DEDACS will allow or block a transaction they want to do with the resources. 
 
-### Interact with the Demo Contracts
-The following tasks are defined for the demo:
+Once the Demo is deployed, you can interact with it through 2 tasks: _swap_ and _upgradeGamer1_.
+
+The _swap_ task takes 2 arguments: _amount_ and _commonforrare_. _amount_ is the amount of tokens you want to swap and _commonforrare_ declares the swap direction. If _commonforrare_ is true, _Common tokens_ will be swapped for _Rare tokens_ and vice versa if it is false. 
+
+The _upgradeGamer1_ task will upgrade the level of _Gamer 1_ to level 2 which will give him more rights. 
+
+The _Common token_ can be swapped unlimited by everyone as declared in the _CommonTokenPolicy_. Gamers can swap at most 1000 _Rare tokens_ at the same time or at most 2000 _Rare tokens_ at the same time if they are in level 2. 
+
+## Example
+The third transaction will be blocked by DEDACS because it violates the _RareTokenPolicy_. However if gamer1 has level 2, which will be the case after the fourth transaction, the third transaction does not violate the policy anymore so if you try it again, it will not be blocked anymore by DEDACS.
+
+```bash
+npx hardhat --config hardhat.config_demo.js --network localhost swap --amount 100000 --commonforrare true
+
+npx hardhat --config hardhat.config_demo.js --network localhost swap --amount 200 --commonforrare false
+
+npx hardhat --config hardhat.config_demo.js --network localhost swap --amount 1500 --commonforrare false
+
+npx hardhat --config hardhat.config_demo.js --network localhost upgradeGamer1
+
+npx hardhat --config hardhat.config_demo.js --network localhost swap --amount 1500 --commonforrare false
+```
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+### Other demo commands
 
 ```bash
 npx hardhat --config hardhat.config_demo.js --network localhost swap --amount 100000 --commonforrare true
